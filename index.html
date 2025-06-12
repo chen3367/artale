@@ -295,9 +295,11 @@
             const encodedName = encodeURIComponent(item.name);
             dropHTML += `
               <div class="drop-item">
-                <img src="https://github.com/chen3367/artale/raw/master/image/${encodedName}.png"
-                     onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'"
-                     alt="${item.name}">
+                <a href="https://maplesaga.com/library/cn/permalink/equip/${item.id}" target="_blank">
+                  <img src="https://github.com/chen3367/artale/raw/master/image/${encodedName}.png"
+                       onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'"
+                       alt="${item.name}">
+                </a>
                 <div>${item.name}</div>
               </div>
             `;
