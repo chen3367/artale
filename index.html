@@ -60,7 +60,12 @@
     }
 
     nav li:hover {
-      background-color: #bfbfbf;
+      background-color: #555;
+      color: #fff;
+    }
+
+    nav li:hover a {
+      color: #fff;
     }
 
     nav li a {
@@ -68,10 +73,6 @@
       text-decoration: none;
       display: block;
       padding: 0.25rem 0.5rem;
-    }
-
-    nav li a:hover {
-      text-decoration: none;
     }
 
     main {
@@ -139,8 +140,8 @@
 
     .monster-info ul li {
       margin: 0.25rem 0;
-      padding-left: 1em;
-      text-indent: -1em;
+      padding-left: 0.5em;
+      text-indent: 0;
     }
 
     .drop-section {
@@ -294,7 +295,9 @@
           groupedDrops[category].forEach(item => {
             dropHTML += `
               <div class="drop-item">
-                <img src="https://maplestory.io/api/TWMS/217/item/${item.id}/icon" alt="${item.name}">
+                <img src="https://github.com/chen3367/artale/raw/master/image/${item.name}.png"
+                     onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'"
+                     alt="${item.name}">
                 <div>${item.name}</div>
               </div>
             `;
