@@ -1,11 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>Artale圖鑑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artale 圖鑑</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #2d2d2d;
+      color: #fff;
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    header a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 64px);
+    }
+
+    nav {
+      width: 240px;
+      background-color: #f0f0f0;
+      padding: 1rem;
+      overflow-y: auto;
+      border-right: 1px solid #ccc;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav li {
+      margin-bottom: 0.75rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
-  <h1>Head1</h1>
-  <p>Test1。</p>
+  <header>
+    <a href="#">Artale 圖鑑</a>
+  </header>
+
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="#">裝備</a></li>
+        <li><a href="#">武器</a></li>
+        <li><a href="#">防具</a></li>
+        <li><a href="#">飾品</a></li>
+        <li><a href="#">其他</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h1>歡迎來到 Artale 圖鑑</h1>
+      <p>請從左側選單選擇分類以查看裝備資料。</p>
+    </main>
+  </div>
 </body>
 </html>
