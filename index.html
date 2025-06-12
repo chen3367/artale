@@ -69,6 +69,38 @@
       padding: 1.5rem;
       overflow-y: auto;
     }
+
+    .search-box {
+      margin-bottom: 1.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .suggestions {
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 150px;
+      overflow-y: auto;
+      background: #fff;
+      position: absolute;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .suggestion-item {
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
@@ -79,18 +111,62 @@
   <div class="container">
     <nav>
       <ul>
-        <li><a href="#">裝備</a></li>
-        <li><a href="#">武器</a></li>
-        <li><a href="#">防具</a></li>
-        <li><a href="#">飾品</a></li>
-        <li><a href="#">其他</a></li>
+        <li><a href="#">怪物</a></li>
       </ul>
     </nav>
 
     <main>
-      <h1>歡迎來到 Artale 圖鑑</h1>
-      <p>請從左側選單選擇分類以查看裝備資料。</p>
+      <div class="search-box">
+        <input type="text" id="monster-search" placeholder="搜尋怪物名稱...">
+        <div id="suggestions" class="suggestions" style="display:none;"></div>
+      </div>
+      <p>請輸入怪物名稱以搜尋資料。</p>
     </main>
   </div>
+
+  <script>
+    const monsters = [
+      "史萊姆", "綠水靈", "藍水靈", "幽靈", "殭屍", "骷髏兵", "火焰犬", "黑騎士", "紅飛龍"
+    ];
+
+    const input = document.getElementById('monster-search');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    input.addEventListener('input', () => {
+      const query = input.value.toLowerCase();
+      suggestionsBox.innerHTML = '';
+
+      if (!query) {
+        suggestionsBox.style.display = 'none';
+        return;
+      }
+
+      const matches = monsters.filter(monster =>
+        monster.toLowerCase().includes(query)
+      );
+
+      if (matches.length) {
+        suggestionsBox.style.display = 'block';
+        matches.forEach(monster => {
+          const div = document.createElement('div');
+          div.textContent = monster;
+          div.className = 'suggestion-item';
+          div.onclick = () => {
+            input.value = monster;
+            suggestionsBox.style.display = 'none';
+          };
+          suggestionsBox.appendChild(div);
+        });
+      } else {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!suggestionsBox.contains(e.target) && e.target !== input) {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
