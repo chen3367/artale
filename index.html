@@ -56,15 +56,22 @@
       padding: 0.5rem 0;
       font-weight: bold;
       border-bottom: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    nav li:hover {
+      background-color: #bfbfbf;
     }
 
     nav li a {
       color: #333;
       text-decoration: none;
+      display: block;
+      padding: 0.25rem 0.5rem;
     }
 
     nav li a:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
 
     main {
@@ -132,6 +139,8 @@
 
     .monster-info ul li {
       margin: 0.25rem 0;
+      padding-left: 1em;
+      text-indent: -1em;
     }
 
     .drop-section {
@@ -260,7 +269,7 @@
     });
 
     function displayMonster(monster) {
-      const dropList = dropData[monster.id] || [];
+      const dropNames = dropData[monster.name] || [];
 
       const groupedDrops = {
         裝備: [],
@@ -268,12 +277,14 @@
         其他: []
       };
 
-      dropList.forEach(id => {
-        const name = itemData[id] || `物品ID ${id}`;
-        const category = id >= 1000000 && id < 2000000 ? '裝備'
-                        : id >= 2000000 && id < 3000000 ? '消耗'
-                        : '其他';
-        groupedDrops[category].push({ id, name });
+      Object.entries(itemData).forEach(([idStr, name]) => {
+        if (dropNames.includes(name)) {
+          const id = parseInt(idStr);
+          const category = id >= 1000000 && id < 2000000 ? '裝備'
+                          : id >= 2000000 && id < 3000000 ? '消耗'
+                          : '其他';
+          groupedDrops[category].push({ id, name });
+        }
       });
 
       let dropHTML = '<div class="drop-section">';
