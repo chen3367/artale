@@ -134,13 +134,12 @@
 
     .monster-info ul {
       list-style: none;
-      padding-left: 1rem;
+      padding-left: 0;
       margin-bottom: 1rem;
     }
 
     .monster-info ul li {
       margin: 0.25rem 0;
-      text-indent: -0.75em;
     }
 
     .drop-section {
@@ -293,9 +292,10 @@
           dropHTML += `<div class="drop-category"><strong>${category}</strong><div class="drop-items">`;
           groupedDrops[category].forEach(item => {
             const encodedName = encodeURIComponent(item.name);
+            const linkType = item.id >= 1000000 && item.id < 2000000 ? 'equip' : 'item';
             dropHTML += `
               <div class="drop-item">
-                <a href="https://maplesaga.com/library/cn/permalink/equip/${item.id}" target="_blank">
+                <a href="https://maplesaga.com/library/cn/permalink/${linkType}/${item.id}" target="_blank">
                   <img src="https://github.com/chen3367/artale/raw/master/image/${encodedName}.png"
                        onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'"
                        alt="${item.name}">
