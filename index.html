@@ -41,7 +41,7 @@
 
     nav {
       width: 240px;
-      background-color: #f0f0f0;
+      background-color: #e6e6e6;
       padding: 1rem;
       overflow-y: auto;
       border-right: 1px solid #ccc;
@@ -49,18 +49,21 @@
 
     nav ul {
       list-style: none;
+      padding-left: 0.5rem;
     }
 
     nav li {
-      margin-bottom: 0.75rem;
+      padding: 0.5rem 0;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
     }
 
-    nav a {
-      text-decoration: none;
+    nav li a {
       color: #333;
+      text-decoration: none;
     }
 
-    nav a:hover {
+    nav li a:hover {
       text-decoration: underline;
     }
 
@@ -116,6 +119,49 @@
       max-height: 100px;
       margin-bottom: 1rem;
     }
+
+    .monster-info h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .monster-info ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 1rem;
+    }
+
+    .monster-info ul li {
+      margin: 0.25rem 0;
+    }
+
+    .drop-section {
+      margin-top: 1rem;
+    }
+
+    .drop-category {
+      margin-top: 0.5rem;
+    }
+
+    .drop-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 0.5rem;
+    }
+
+    .drop-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.85rem;
+      width: 60px;
+      text-align: center;
+    }
+
+    .drop-item img {
+      max-width: 40px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
@@ -141,11 +187,24 @@
 
   <script>
     let monsterData = [];
+    let dropData = {};
+    let itemData = {};
 
-    async function loadMonsterData() {
-      const response = await fetch("https://raw.githubusercontent.com/chen3367/artale/master/mob.json");
-      const raw = await response.json();
-      monsterData = Object.entries(raw).map(([name, data]) => {
+    async function loadData() {
+      const [mobRes, dropRes, itemRes] = await Promise.all([
+        fetch("https://raw.githubusercontent.com/chen3367/artale/master/mob.json"),
+        fetch("https://raw.githubusercontent.com/chen3367/artale/master/drop_data.json"),
+        fetch("https://raw.githubusercontent.com/chen3367/artale/master/item.json")
+      ]);
+
+      const [mobJson, dropJson, itemJson] = await Promise.all([
+        mobRes.json(), dropRes.json(), itemRes.json()
+      ]);
+
+      dropData = dropJson;
+      itemData = itemJson;
+
+      monsterData = Object.entries(mobJson).map(([name, data]) => {
         const id = data[8].split(".")[0];
         return {
           name,
@@ -201,6 +260,39 @@
     });
 
     function displayMonster(monster) {
+      const dropList = dropData[monster.id] || [];
+
+      const groupedDrops = {
+        裝備: [],
+        消耗: [],
+        其他: []
+      };
+
+      dropList.forEach(id => {
+        const name = itemData[id] || `物品ID ${id}`;
+        const category = id >= 1000000 && id < 2000000 ? '裝備'
+                        : id >= 2000000 && id < 3000000 ? '消耗'
+                        : '其他';
+        groupedDrops[category].push({ id, name });
+      });
+
+      let dropHTML = '<div class="drop-section">';
+      for (const category in groupedDrops) {
+        if (groupedDrops[category].length) {
+          dropHTML += `<div class="drop-category"><strong>${category}</strong><div class="drop-items">`;
+          groupedDrops[category].forEach(item => {
+            dropHTML += `
+              <div class="drop-item">
+                <img src="https://maplestory.io/api/TWMS/217/item/${item.id}/icon" alt="${item.name}">
+                <div>${item.name}</div>
+              </div>
+            `;
+          });
+          dropHTML += '</div></div>';
+        }
+      }
+      dropHTML += '</div>';
+
       infoBox.innerHTML = `
         <img src="${monster.img}" alt="${monster.name}">
         <h2>${monster.name}</h2>
@@ -214,6 +306,7 @@
           <li>魔法防禦: ${monster.mdef}</li>
           <li>命中需求: ${monster.acc}</li>
         </ul>
+        ${dropHTML}
       `;
       infoBox.style.display = 'block';
     }
@@ -224,7 +317,7 @@
       }
     });
 
-    loadMonsterData();
+    loadData();
   </script>
 </body>
 </html>
