@@ -68,10 +68,12 @@
       flex: 1;
       padding: 1.5rem;
       overflow-y: auto;
+      position: relative;
     }
 
     .search-box {
       margin-bottom: 1.5rem;
+      position: relative;
     }
 
     input[type="text"] {
@@ -101,6 +103,19 @@
     .suggestion-item:hover {
       background-color: #f0f0f0;
     }
+
+    .monster-info {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .monster-info img {
+      max-height: 100px;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -120,17 +135,37 @@
         <input type="text" id="monster-search" placeholder="搜尋怪物名稱...">
         <div id="suggestions" class="suggestions" style="display:none;"></div>
       </div>
-      <p>請輸入怪物名稱以搜尋資料。</p>
+      <div id="monster-info" class="monster-info" style="display:none;"></div>
     </main>
   </div>
 
   <script>
-    const monsters = [
-      "史萊姆", "綠水靈", "藍水靈", "幽靈", "殭屍", "骷髏兵", "火焰犬", "黑騎士", "紅飛龍"
-    ];
+    let monsterData = [];
+
+    async function loadMonsterData() {
+      const response = await fetch("https://raw.githubusercontent.com/chen3367/artale/master/mob.json");
+      const raw = await response.json();
+      monsterData = Object.entries(raw).map(([name, data]) => {
+        const id = data[8].split(".")[0];
+        return {
+          name,
+          id,
+          level: data[0],
+          hp: data[1],
+          mp: data[2],
+          exp: data[3],
+          avoid: data[4],
+          pdef: data[5],
+          mdef: data[6],
+          acc: data[7],
+          img: `https://maplestory.io/api/TWMS/217/mob/${id}/render/stand`
+        };
+      });
+    }
 
     const input = document.getElementById('monster-search');
     const suggestionsBox = document.getElementById('suggestions');
+    const infoBox = document.getElementById('monster-info');
 
     input.addEventListener('input', () => {
       const query = input.value.toLowerCase();
@@ -138,35 +173,58 @@
 
       if (!query) {
         suggestionsBox.style.display = 'none';
+        infoBox.style.display = 'none';
         return;
       }
 
-      const matches = monsters.filter(monster =>
-        monster.toLowerCase().includes(query)
+      const matches = monsterData.filter(monster =>
+        monster.name.toLowerCase().includes(query)
       );
 
       if (matches.length) {
         suggestionsBox.style.display = 'block';
         matches.forEach(monster => {
           const div = document.createElement('div');
-          div.textContent = monster;
+          div.textContent = monster.name;
           div.className = 'suggestion-item';
           div.onclick = () => {
-            input.value = monster;
+            input.value = monster.name;
             suggestionsBox.style.display = 'none';
+            displayMonster(monster);
           };
           suggestionsBox.appendChild(div);
         });
       } else {
         suggestionsBox.style.display = 'none';
+        infoBox.style.display = 'none';
       }
     });
+
+    function displayMonster(monster) {
+      infoBox.innerHTML = `
+        <img src="${monster.img}" alt="${monster.name}">
+        <h2>${monster.name}</h2>
+        <ul>
+          <li>等級: ${monster.level}</li>
+          <li>HP: ${monster.hp}</li>
+          <li>MP: ${monster.mp}</li>
+          <li>經驗: ${monster.exp}</li>
+          <li>迴避: ${monster.avoid}</li>
+          <li>物理防禦: ${monster.pdef}</li>
+          <li>魔法防禦: ${monster.mdef}</li>
+          <li>命中需求: ${monster.acc}</li>
+        </ul>
+      `;
+      infoBox.style.display = 'block';
+    }
 
     document.addEventListener('click', (e) => {
       if (!suggestionsBox.contains(e.target) && e.target !== input) {
         suggestionsBox.style.display = 'none';
       }
     });
+
+    loadMonsterData();
   </script>
 </body>
 </html>
