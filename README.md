@@ -1,1 +1,1 @@
-# artale
+# Artale圖鑑
