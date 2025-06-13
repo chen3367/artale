@@ -1,339 +1,114 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Artale 圖鑑</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background-color: #2d2d2d;
-      color: #fff;
       padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
+      background: #f5f5f5;
+    }
+    .tabs {
       display: flex;
-      align-items: center;
+      margin-bottom: 1rem;
     }
-
-    header a {
-      text-decoration: none;
-      color: #fff;
-    }
-
-    .container {
-      display: flex;
+    .tabs button {
       flex: 1;
-      height: calc(100vh - 64px);
+      padding: 0.5rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border: none;
+      background: #ddd;
     }
-
-    nav {
-      width: 240px;
-      background-color: #e6e6e6;
-      padding: 1rem;
-      overflow-y: auto;
-      border-right: 1px solid #ccc;
-    }
-
-    nav ul {
-      list-style: none;
-      padding-left: 0.5rem;
-    }
-
-    nav li {
-      padding: 0.5rem 0;
+    .tabs button.active {
+      background: #bbb;
       font-weight: bold;
-      border-bottom: 1px solid #ccc;
-      transition: background-color 0.3s;
     }
-
-    nav li:hover {
-      background-color: #555;
-      color: #fff;
-    }
-
-    nav li:hover a {
-      color: #fff;
-    }
-
-    nav li a {
-      color: #333;
-      text-decoration: none;
-      display: block;
-      padding: 0.25rem 0.5rem;
-    }
-
-    main {
-      flex: 1;
-      padding: 1.5rem;
-      overflow-y: auto;
-      position: relative;
-    }
-
     .search-box {
-      margin-bottom: 1.5rem;
-      position: relative;
+      margin-bottom: 1rem;
     }
-
     input[type="text"] {
       width: 100%;
       padding: 0.5rem;
       font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      box-sizing: border-box;
     }
-
     .suggestions {
-      border: 1px solid #ccc;
-      border-top: none;
-      max-height: 150px;
-      overflow-y: auto;
-      background: #fff;
-      position: absolute;
-      width: 100%;
-      z-index: 10;
+      position: relative;
     }
-
+    .suggestion-list {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+    }
     .suggestion-item {
-      padding: 0.5rem;
+      padding: 0.4rem;
       cursor: pointer;
     }
-
     .suggestion-item:hover {
-      background-color: #f0f0f0;
+      background: #eee;
     }
-
-    .monster-info {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background-color: #f9f9f9;
+    .info-section img {
+      max-height: 80px;
+      vertical-align: middle;
     }
-
-    .monster-info img {
-      max-height: 100px;
-      margin-bottom: 1rem;
-    }
-
-    .monster-info h2 {
-      margin-bottom: 0.5rem;
-    }
-
-    .monster-info ul {
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 1rem;
-    }
-
-    .monster-info ul li {
-      margin: 0.25rem 0;
-    }
-
-    .drop-section {
-      margin-top: 1rem;
-    }
-
-    .drop-category {
-      margin-top: 0.5rem;
-    }
-
-    .drop-items {
+    .drops, .mob-list {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 0.5rem;
     }
-
-    .drop-item {
+    .drops a, .mob-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.85rem;
-      width: 60px;
-      text-align: center;
+      text-decoration: none;
+      font-size: 0.9rem;
+      width: 80px;
     }
-
-    .drop-item img {
-      max-width: 40px;
-      height: auto;
+    .mob-card img {
+      height: 60px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="#">Artale 圖鑑</a>
-  </header>
+  <h1>Artale 圖鑑</h1>
 
-  <div class="container">
-    <nav>
-      <ul>
-        <li><a href="#">怪物</a></li>
-      </ul>
-    </nav>
-
-    <main>
-      <div class="search-box">
-        <input type="text" id="monster-search" placeholder="搜尋怪物名稱...">
-        <div id="suggestions" class="suggestions" style="display:none;"></div>
-      </div>
-      <div id="monster-info" class="monster-info" style="display:none;"></div>
-    </main>
+  <div class="tabs">
+    <button id="tab-mob" class="active">怪物搜尋</button>
+    <button id="tab-item">物品搜尋</button>
   </div>
 
-  <script>
-    let monsterData = [];
-    let dropData = {};
-    let itemData = {};
+  <div id="section-mob">
+    <div class="search-box">
+      <label>輸入怪物名稱：</label>
+      <div class="suggestions">
+        <input type="text" id="mob-input" autocomplete="off" />
+        <div id="mob-suggestions" class="suggestion-list" style="display:none;"></div>
+      </div>
+    </div>
+    <div id="mob-info" class="info-section"></div>
+  </div>
 
-    async function loadData() {
-      const [mobRes, dropRes, itemRes] = await Promise.all([
-        fetch("https://raw.githubusercontent.com/chen3367/artale/master/mob.json"),
-        fetch("https://raw.githubusercontent.com/chen3367/artale/master/drop_data.json"),
-        fetch("https://raw.githubusercontent.com/chen3367/artale/master/item.json")
-      ]);
+  <div id="section-item" style="display:none;">
+    <div class="search-box">
+      <label>輸入物品名稱：</label>
+      <div class="suggestions">
+        <input type="text" id="item-input" autocomplete="off" />
+        <div id="item-suggestions" class="suggestion-list" style="display:none;"></div>
+      </div>
+    </div>
+    <div id="item-info" class="info-section"></div>
+  </div>
 
-      const [mobJson, dropJson, itemJson] = await Promise.all([
-        mobRes.json(), dropRes.json(), itemRes.json()
-      ]);
-
-      dropData = dropJson;
-      itemData = itemJson;
-
-      monsterData = Object.entries(mobJson).map(([name, data]) => {
-        const id = data[8].split(".")[0];
-        return {
-          name,
-          id,
-          level: data[0],
-          hp: data[1],
-          mp: data[2],
-          exp: data[3],
-          avoid: data[4],
-          pdef: data[5],
-          mdef: data[6],
-          acc: data[7],
-          img: `https://maplestory.io/api/TWMS/217/mob/${id}/render/stand`
-        };
-      });
-    }
-
-    const input = document.getElementById('monster-search');
-    const suggestionsBox = document.getElementById('suggestions');
-    const infoBox = document.getElementById('monster-info');
-
-    input.addEventListener('input', () => {
-      const query = input.value.toLowerCase();
-      suggestionsBox.innerHTML = '';
-
-      if (!query) {
-        suggestionsBox.style.display = 'none';
-        infoBox.style.display = 'none';
-        return;
-      }
-
-      const matches = monsterData.filter(monster =>
-        monster.name.toLowerCase().includes(query)
-      );
-
-      if (matches.length) {
-        suggestionsBox.style.display = 'block';
-        matches.forEach(monster => {
-          const div = document.createElement('div');
-          div.textContent = monster.name;
-          div.className = 'suggestion-item';
-          div.onclick = () => {
-            input.value = monster.name;
-            suggestionsBox.style.display = 'none';
-            displayMonster(monster);
-          };
-          suggestionsBox.appendChild(div);
-        });
-      } else {
-        suggestionsBox.style.display = 'none';
-        infoBox.style.display = 'none';
-      }
-    });
-
-    function displayMonster(monster) {
-      const dropNames = dropData[monster.name] || [];
-
-      const groupedDrops = {
-        裝備: [],
-        消耗: [],
-        其他: []
-      };
-
-      Object.entries(itemData).forEach(([idStr, name]) => {
-        if (dropNames.includes(name)) {
-          const id = parseInt(idStr);
-          const category = id >= 1000000 && id < 2000000 ? '裝備'
-                          : id >= 2000000 && id < 3000000 ? '消耗'
-                          : '其他';
-          groupedDrops[category].push({ id, name });
-        }
-      });
-
-      let dropHTML = '<div class="drop-section">';
-      for (const category in groupedDrops) {
-        if (groupedDrops[category].length) {
-          dropHTML += `<div class="drop-category"><strong>${category}</strong><div class="drop-items">`;
-          groupedDrops[category].forEach(item => {
-            const encodedName = encodeURIComponent(item.name);
-            const linkType = item.id >= 1000000 && item.id < 2000000 ? 'equip' : 'item';
-            dropHTML += `
-              <div class="drop-item">
-                <a href="https://maplesaga.com/library/cn/permalink/${linkType}/${item.id}" target="_blank">
-                  <img src="https://github.com/chen3367/artale/raw/master/image/${encodedName}.png"
-                       onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'"
-                       alt="${item.name}">
-                </a>
-                <div>${item.name}</div>
-              </div>
-            `;
-          });
-          dropHTML += '</div></div>';
-        }
-      }
-      dropHTML += '</div>';
-
-      infoBox.innerHTML = `
-        <img src="${monster.img}" alt="${monster.name}">
-        <h2>${monster.name}</h2>
-        <ul>
-          <li>等級: ${monster.level}</li>
-          <li>HP: ${monster.hp}</li>
-          <li>MP: ${monster.mp}</li>
-          <li>經驗: ${monster.exp}</li>
-          <li>迴避: ${monster.avoid}</li>
-          <li>物理防禦: ${monster.pdef}</li>
-          <li>魔法防禦: ${monster.mdef}</li>
-          <li>命中需求: ${monster.acc}</li>
-        </ul>
-        ${dropHTML}
-      `;
-      infoBox.style.display = 'block';
-    }
-
-    document.addEventListener('click', (e) => {
-      if (!suggestionsBox.contains(e.target) && e.target !== input) {
-        suggestionsBox.style.display = 'none';
-      }
-    });
-
-    loadData();
-  </script>
+  <script src="js/mob.js"></script>
+  <script src="js/item.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
