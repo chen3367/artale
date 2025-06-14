@@ -16,6 +16,9 @@ async function loadItemData() {
     img: `https://maplestory.io/api/TWMS/217/mob/${arr[8].split('.')[0]}/render/stand`,
     level: arr[0]
   }));
+
+  // 初始提示文字
+  document.getElementById('item-info').innerHTML = '<div class="info-placeholder">請輸入物品名稱進行搜尋</div>';
 }
 
 function searchItems(query) {
@@ -34,7 +37,7 @@ function renderItem(item) {
   const imgUrl = `image/${encodeURIComponent(item.name)}.png`;
 
   let html = `
-    <a href="https://maplesaga.com/library/cn/permalink/${linkType}/${item.id}" target="_blank">
+    <a href="https://maplesaga.com/library/cn/permalink/${linkType}/${item.id}" target="_blank" title="${item.name}">
       <img src="${imgUrl}" onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${item.id}/icon'">
     </a>
     <h2>${item.name}</h2>
@@ -48,7 +51,9 @@ function renderItem(item) {
     owners.forEach(mob => {
       html += `
         <div class="mob-card">
-          <img src="${mob.img}" alt="${mob.name}">
+          <a href="https://maplesaga.com/library/cn/permalink/mob/${mob.id}" target="_blank" title="${mob.name}">
+            <img src="${mob.img}" alt="${mob.name}">
+          </a>
           <div>${mob.name} (Lv${mob.level})</div>
         </div>`;
     });
@@ -56,4 +61,43 @@ function renderItem(item) {
   }
 
   document.getElementById('item-info').innerHTML = html;
+}
+
+// 輸入與建議邏輯
+function setupItemSearch() {
+  const itemInput = document.getElementById('item-input');
+  const itemSug = document.getElementById('item-suggestions');
+
+  itemInput.addEventListener('input', () => {
+    const q = itemInput.value.trim();
+    itemSug.innerHTML = '';
+    itemSug.style.display = 'none';
+
+    if (!q) {
+      document.getElementById('item-info').innerHTML = '<div class="info-placeholder">請輸入物品名稱進行搜尋</div>';
+      return;
+    }
+
+    const results = searchItems(q);
+    if (results.length === 0) {
+      itemSug.innerHTML = '<div class="suggestion-item">找不到符合的物品</div>';
+      itemSug.style.display = 'block';
+      document.getElementById('item-info').innerHTML = '';
+      return;
+    }
+
+    for (const it of results.slice(0, 20)) {
+      const div = document.createElement('div');
+      div.className = 'suggestion-item';
+      div.textContent = it.name;
+      div.onclick = () => {
+        itemInput.value = it.name;
+        itemSug.innerHTML = '';
+        itemSug.style.display = 'none';
+        renderItem(it);
+      };
+      itemSug.appendChild(div);
+    }
+    itemSug.style.display = 'block';
+  });
 }

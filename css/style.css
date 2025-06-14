@@ -1,71 +1,276 @@
-/* css/style.css */
+/* 一、全局 & Header */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 body {
-  font-family: Arial, sans-serif;
-  padding: 1rem;
-  background: #f5f5f5;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f5f6f7;
+  color: #333;
+}
+header {
+  height: 50px;
+  background: #151c2c;
+  display: flex;
+  align-items: center;
+}
+header h1 {
+  color: #fff;
+  font-size: 20px;
+  margin-left: 16px;
+  font-weight: bold;
+}
+
+/* 二、主容器：全寬度，Flex 排列 */
+.container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+/* 三、Sidebar：左對齊、同色 */
+.sidebar {
+  width: 220px;
+  background: #151c2c;
+  overflow-y: auto;
 }
 .tabs {
   display: flex;
-  margin-bottom: 1rem;
+  flex-direction: column;
 }
 .tabs button {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 1.1rem;
-  cursor: pointer;
+  width: 100%;
+  height: 60px;
+  background: #151c2c;
   border: none;
-  background: #ddd;
+  font-size: 16px;
+  text-align: left;
+  padding-left: 8px;
+  color: #fff;
+  cursor: pointer;
 }
 .tabs button.active {
-  background: #bbb;
+  background: #25314e;
+  color: #fff;
   font-weight: bold;
 }
+.tabs button:hover {
+  background: #25314e;
+}
+
+/* 四、Main Content：置中可滾動 */
+.main-content {
+  flex: 1;
+  margin: 0 auto;
+  background: #fff;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* 五、搜尋框 & 建議清單 */
 .search-box {
-  margin-bottom: 1rem;
-}
-input[type="text"] {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-.suggestions {
   position: relative;
+  margin-bottom: 24px;
+  max-width: 350px;
 }
+.search-box input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  font-size: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.search-box input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+.search-box input:focus {
+  border-color: #3a9efb;
+  box-shadow: 0 0 8px #3a9efb;
+}
+
+/* 建議清單 */
 .suggestion-list {
   position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 200px;
+  top: 46px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  max-height: 280px;
   overflow-y: auto;
-  z-index: 1000;
-  width: 100%;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  font-size: 14px;
 }
-.suggestion-item {
-  padding: 0.4rem;
+.suggestion-list .suggestion-item {
+  padding: 10px 14px;
   cursor: pointer;
+  color: #25314e;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.suggestion-item:hover {
-  background: #eee;
+.suggestion-list .suggestion-item:hover {
+  background-color: #3a9efb;
+  color: #fff;
+  font-weight: 600;
 }
+
+/* 六、結果顯示 */
 .info-section img {
   max-height: 80px;
-  vertical-align: middle;
+  border-radius: 4px;
+  margin-right: 12px;
 }
 .drops, .mob-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 0.5rem;
+  gap: 12px;
+  margin-top: 16px;
 }
 .drops a, .mob-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  font-size: 0.9rem;
   width: 80px;
+  text-align: center;
+  font-size: 14px;
+  color: #25314e;
+  text-decoration: none;
 }
+.drop-section {
+  width: 960px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  background-color: #fdfdfd;
+}
+.drop-section h4 {
+  margin-left: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+/* 六、怪物相關 */
+.mob-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px; /* 間隔加寬，原本是 12px */
+  margin-top: 16px;
+}
+
+.mob-card {
+  width: 160px; /* 原本是 80px 放大兩倍 */
+  text-align: center;
+  font-size: 14px;
+  color: #25314e;
+}
+
 .mob-card img {
-  height: 60px;
+  width: 160px;  /* 讓圖片放大兩倍 */
+  height: auto;
+  object-fit: contain;  /* 保持比例，圖片不會被拉扯變形 */
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.mob-search-img {
+  width: 160px;    /* 兩倍大小，原本約80px */
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  margin: 5px;
+}
+
+.mob-info-table {
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+  /* 不使用 table-layout: fixed */
+}
+
+.mob-info-table th {
+  width: 100px;             /* 所有標題欄固定寬度 */
+  background: #e6ecf3;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.mob-info-table td {
+  width: 200px;             /* 所有值欄固定寬度 */
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  background: #f9f9f9;
+  word-break: break-word;
+}
+
+/* 搜尋前的提示文字 */
+.info-placeholder {
+  color: #777;
+  font-style: italic;
+  margin-top: 12px;
+  font-size: 15px;
+  user-select: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* 區塊預設顯示設定 */
+#section-mob,
+#section-item {
+  display: none; /* 一開始怪物跟物品區塊隱藏 */
+}
+
+#section-home {
+  display: block; /* 預設首頁顯示 */
+}
+
+/* 你原本用的 active 樣式也保留 */
+#tab-mob.active,
+#tab-item.active {
+  font-weight: bold; /* 或你原本 active 樣式 */
+}
+
+.version-log {
+  margin-top: 48px;
+}
+
+.version-log h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #25314e;
+  padding-bottom: 4px;
+  color: #25314e;
+}
+
+.version-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.version-table th,
+.version-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.version-table th {
+  background-color: #e6ecf3;
+  font-weight: bold;
+}
+
+.version-table td {
+  background-color: #f9f9f9;
 }

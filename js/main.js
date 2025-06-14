@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   Promise.all([loadMobData(), loadItemData()]).then(() => {
     setup();
+    switchTab('home');
   });
 });
 
@@ -15,6 +16,8 @@ function setup() {
 
   document.getElementById('tab-mob').onclick = () => switchTab('mob');
   document.getElementById('tab-item').onclick = () => switchTab('item');
+
+  // 預設切換到首頁
 
   mobInput.oninput = () => {
     const q = mobInput.value.trim();
@@ -69,11 +72,17 @@ function setup() {
       itemSug.style.display = 'none';
     }
   });
+  document.getElementById('home-link').onclick = (e) => {
+    e.preventDefault();
+    switchTab('home');
+  };
 }
 
 function switchTab(tab) {
+  document.getElementById('section-home').style.display = tab === 'home' ? 'block' : 'none';
   document.getElementById('section-mob').style.display = tab === 'mob' ? 'block' : 'none';
   document.getElementById('section-item').style.display = tab === 'item' ? 'block' : 'none';
+
   document.getElementById('tab-mob').classList.toggle('active', tab === 'mob');
   document.getElementById('tab-item').classList.toggle('active', tab === 'item');
 }
