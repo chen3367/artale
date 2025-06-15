@@ -4,9 +4,9 @@ let mobGlobal = [];
 
 async function loadItemData() {
   const [mobRes, dropRes, itemRes] = await Promise.all([
-    fetch('data/mob.json').then(r => r.json()),
-    fetch('data/drop_data.json').then(r => r.json()),
-    fetch('data/item.json').then(r => r.json())
+    fetch('../data/mob.json').then(r => r.json()),
+    fetch('../data/drop_data.json').then(r => r.json()),
+    fetch('../data/item.json').then(r => r.json())
   ]);
   dropGlobal = dropRes;
   itemDataGlobal = itemRes;
@@ -34,7 +34,7 @@ function renderItem(item) {
     .filter(Boolean);
 
   const linkType = item.id < 2000000 ? 'equip' : 'item';
-  const imgUrl = `image/${encodeURIComponent(item.name)}.png`;
+  const imgUrl = `../image/${encodeURIComponent(item.name)}.png`;
 
   let html = `
     <a href="https://maplesaga.com/library/cn/permalink/${linkType}/${item.id}" target="_blank" title="${item.name}">

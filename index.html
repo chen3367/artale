@@ -8,64 +8,35 @@
 </head>
 <body>
   <header>
-    <h1><a id="home-link" href="#" style="color: #fff; text-decoration: none;">Artale 圖鑑</a></h1>
+    <h1><a id="home-link" href="/" style="color: #fff; text-decoration: none;">Artale 圖鑑</a></h1>
   </header>
-
   <div class="container">
     <nav class="sidebar">
       <div class="tabs">
-        <button id="tab-mob" class="active">怪物搜尋</button>
-        <button id="tab-item">物品搜尋</button>
+        <a href="pages/mob.html"><button id="tab-mob">怪物搜尋</button></a>
+        <a href="pages/item.html"><button id="tab-item">物品搜尋</button></a>
+        <a href="pages/opq.html"><button id="tab-opq">女神之塔</button></a>
       </div>
     </nav>
     <main class="main-content">
       <section id="section-home">
-        <h2>歡迎來到 Artale 圖鑑</h2>
-        <p>本工具提供楓之谷 Artale Server 的怪物與物品資料查詢功能。</p>
-        <ul>
-          <li>🔍 點選「怪物搜尋」可查詢怪物詳細能力與掉落物</li>
-          <li>📦 點選「物品搜尋」可查詢哪些怪物掉落該物品</li>
-        </ul>
-        <p>資料來源：<a href="https://a2983456456.github.io/artale-drop/" target="_blank">Artale怪物掉落物一覽</a></p>
-      </section>
+        <h2>歡迎使用 Artale 圖鑑</h2>
+        <p>請從左側選單選取功能進行搜尋。</p>
 
-      <section id="section-mob">
-        <div class="search-box">
-          <input type="text" id="mob-input" placeholder="輸入怪物名稱" autocomplete="off" />
-          <div id="mob-suggestions" class="suggestion-list" style="display:none;"></div>
+        <div class="version-log">
+          <h2>更新日誌</h2>
+          <table class="version-table">
+            <thead>
+              <tr><th>日期</th><th>更新內容</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2025-06-16</td><td>新增女神之塔-女神400速解小工具</td></tr>
+              <tr><td>2025-06-15</td><td>新增怪物搜尋以及物品搜尋功能</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div id="mob-info" class="info-section"></div>
-      </section>
-
-      <section id="section-item" style="display:none;">
-        <div class="search-box">
-          <input type="text" id="item-input" placeholder="輸入物品名稱" autocomplete="off" />
-          <div id="item-suggestions" class="suggestion-list" style="display:none;"></div>
-        </div>
-        <div id="item-info" class="info-section"></div>
-      </section>
-      <section class="version-log">
-        <h2>版本資訊</h2>
-        <table class="version-table">
-          <thead>
-            <tr>
-              <th>版本</th>
-              <th>更新內容</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>v1.0.0</td>
-              <td>新增怪物搜尋以及物品搜尋功能</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
     </main>
   </div>
-
-  <script src="js/mob.js"></script>
-  <script src="js/item.js"></script>
-  <script src="js/main.js"></script>
 </body>
 </html>

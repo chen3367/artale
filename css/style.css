@@ -1,4 +1,12 @@
 /* 一、全局 & Header */
+.main-content h2,
+#workspace h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #25314e;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -74,6 +82,7 @@ header h1 {
   position: relative;
   margin-bottom: 24px;
   max-width: 350px;
+  padding-top: 16px;
 }
 .search-box input {
   width: 100%;
@@ -237,7 +246,8 @@ header h1 {
 
 /* 你原本用的 active 樣式也保留 */
 #tab-mob.active,
-#tab-item.active {
+#tab-item.active,
+#tab-opq.active {
   font-weight: bold; /* 或你原本 active 樣式 */
 }
 
@@ -254,7 +264,7 @@ header h1 {
 }
 
 .version-table {
-  width: 100%;
+  width: 25%;
   border-collapse: collapse;
   font-size: 14px;
 }

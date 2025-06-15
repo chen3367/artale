@@ -4,9 +4,9 @@ let mobItems = {};
 
 async function loadMobData() {
   const [mobRes, dropRes, itemRes] = await Promise.all([
-    fetch('data/mob.json').then(r => r.json()),
-    fetch('data/drop_data.json').then(r => r.json()),
-    fetch('data/item.json').then(r => r.json())
+    fetch('../data/mob.json').then(r => r.json()),
+    fetch('../data/drop_data.json').then(r => r.json()),
+    fetch('../data/item.json').then(r => r.json())
   ]);
   mobDrop = dropRes;
   mobItems = itemRes;
@@ -63,7 +63,7 @@ function renderMob(m) {
         const link = it.id < 2000000 ? 'equip' : 'item';
         html += `
           <a href="https://maplesaga.com/library/cn/permalink/${link}/${it.id}" target="_blank" title="${it.name}">
-            <img src="image/${enc}.png" onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${it.id}/icon'">
+            <img src="../image/${enc}.png" onerror="this.onerror=null;this.src='https://maplestory.io/api/TWMS/217/item/${it.id}/icon'">
             <br>${it.name}
           </a>`;
       });

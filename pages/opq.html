@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>女神之塔速解 - Artale 圖鑑</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <header>
+    <h1><a id="home-link" href="/" style="color: #fff; text-decoration: none;">Artale 圖鑑</a></h1>
+  </header>
+
+  <div class="container">
+    <nav class="sidebar">
+      <div class="tabs">
+        <a href="mob.html"><button id="tab-mob">怪物搜尋</button></a>
+        <a href="item.html"><button id="tab-item">物品搜尋</button></a>
+        <a href="opq.html"><button id="tab-opq">女神之塔</button></a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <h2>女神 400 速解小工具</h2>
+      <div class="w-full p-4 border rounded-lg mb-2">
+        <div id="output" class="md:h-48 h-36 md:text-4xl text-lg flex justify-center items-center shadow border-b mb-6"></div>
+        <div class="w-full">
+          <!-- 平台狀態說明 -->
+          <div class="flex flex-row mb-8">
+            <p class="md:w-1/2 w-20 flex justify-center items-center md:text-4xl text-lg">平台狀態</p>
+            <div class="text-gray-500 flex-1 pl-2">
+              <div class="flex md:flex-row flex-col"><p class="w-8 font-bold text-lg">0:</p><p class="md:text-lg text-sm">無正確平台</p></div>
+              <div class="flex md:flex-row flex-col"><p class="w-8 font-bold text-lg">1:</p><p class="md:text-lg text-sm">1 個正確平台</p></div>
+              <div class="flex md:flex-row flex-col"><p class="w-8 font-bold text-lg">2:</p><p class="md:text-lg text-sm">2 個正確平台</p></div>
+            </div>
+          </div>
+
+          <!-- 四個選項組 -->
+          <div class="flex flex-col md:mb-6 mb-2">
+            <div id="groups"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/opq.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("tab-opq")?.classList.add("active");
+  });
+  </script>
+</body>
+</html>

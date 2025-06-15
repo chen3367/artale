@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>物品搜尋 - Artale 圖鑑</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="../js/item.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadItemData();
+      setupItemSearch();
+      document.getElementById("tab-item").classList.add("active");
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1><a id="home-link" href="/" style="color: #fff; text-decoration: none;">Artale 圖鑑</a></h1>
+  </header>
+  <div class="container">
+    <nav class="sidebar">
+      <div class="tabs">
+        <a href="mob.html"><button id="tab-mob">怪物搜尋</button></a>
+        <a href="item.html"><button id="tab-item">物品搜尋</button></a>
+        <a href="opq.html"><button id="tab-opq">女神之塔</button></a>
+      </div>
+    </nav>
+    <main class="main-content">
+      <h2>物品搜尋</h2>
+      <div class="search-box">
+        <input id="item-input" type="text" placeholder="請輸入物品名稱" />
+        <div id="item-suggestions" class="suggestion-list"></div>
+      </div>
+      <div id="item-info" class="info-section"></div>
+    </main>
+  </div>
+</body>
+</html>
