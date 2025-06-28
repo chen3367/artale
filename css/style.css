@@ -1,12 +1,4 @@
 /* 一、全局 & Header */
-.main-content h2,
-#workspace h2 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: #25314e;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -104,10 +96,9 @@ header h1 {
   box-shadow: 0 0 8px #3a9efb;
 }
 
-/* 建議清單 */
 .suggestion-list {
   position: absolute;
-  top: 60px;
+  top: 46px;
   left: 0;
   right: 0;
   background: #fff;
@@ -166,63 +157,53 @@ header h1 {
   padding-bottom: 4px;
 }
 
-/* 六、怪物相關 */
 .mob-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px; /* 間隔加寬，原本是 12px */
+  gap: 24px;
   margin-top: 16px;
 }
-
 .mob-card {
-  width: 160px; /* 原本是 80px 放大兩倍 */
+  width: 160px;
   text-align: center;
   font-size: 14px;
   color: #25314e;
 }
-
 .mob-card img {
-  width: 160px;  /* 讓圖片放大兩倍 */
+  width: 160px;
   height: auto;
-  object-fit: contain;  /* 保持比例，圖片不會被拉扯變形 */
+  object-fit: contain;
   border-radius: 4px;
   margin-bottom: 6px;
 }
-
 .mob-search-img {
-  width: 160px;    /* 兩倍大小，原本約80px */
+  width: 160px;
   height: auto;
   object-fit: contain;
   border-radius: 4px;
   margin: 5px;
 }
-
 .mob-info-table {
   border-collapse: collapse;
   margin: 16px 0;
   font-size: 15px;
-  /* 不使用 table-layout: fixed */
 }
-
 .mob-info-table th {
-  width: 100px;             /* 所有標題欄固定寬度 */
+  width: 100px;
   background: #e6ecf3;
   font-weight: bold;
   border: 1px solid #ccc;
   padding: 8px 12px;
   text-align: left;
 }
-
 .mob-info-table td {
-  width: 200px;             /* 所有值欄固定寬度 */
+  width: 200px;
   border: 1px solid #ccc;
   padding: 8px 12px;
   text-align: left;
   background: #f9f9f9;
   word-break: break-word;
 }
-
-/* 搜尋前的提示文字 */
 .info-placeholder {
   color: #777;
   font-style: italic;
@@ -233,27 +214,22 @@ header h1 {
   padding: 20px 0;
 }
 
-/* 區塊預設顯示設定 */
 #section-mob,
 #section-item {
-  display: none; /* 一開始怪物跟物品區塊隱藏 */
+  display: none;
 }
-
 #section-home {
-  display: block; /* 預設首頁顯示 */
+  display: block;
 }
-
-/* 你原本用的 active 樣式也保留 */
 #tab-mob.active,
 #tab-item.active,
 #tab-opq.active {
-  font-weight: bold; /* 或你原本 active 樣式 */
+  font-weight: bold;
 }
 
 .version-log {
   margin-top: 48px;
 }
-
 .version-log h2 {
   font-size: 18px;
   margin-bottom: 12px;
@@ -261,25 +237,67 @@ header h1 {
   padding-bottom: 4px;
   color: #25314e;
 }
-
 .version-table {
-  width: 25%;
+  width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
-
 .version-table th,
 .version-table td {
   border: 1px solid #ccc;
   padding: 8px 12px;
   text-align: left;
 }
-
 .version-table th {
   background-color: #e6ecf3;
   font-weight: bold;
 }
-
 .version-table td {
   background-color: #f9f9f9;
+}
+
+/* 響應式設計：手機友善 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+  .sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: auto;
+  }
+  .tabs {
+    flex-direction: row;
+    width: 100%;
+  }
+  .tabs button {
+    flex: 1;
+    height: 48px;
+    font-size: 14px;
+    text-align: center;
+    padding: 0;
+  }
+  .main-content {
+    padding: 16px;
+  }
+  .search-box {
+    max-width: 100%;
+  }
+  .drop-section {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .mob-card,
+  .mob-card img,
+  .mob-search-img {
+    width: 100px;
+  }
+  .mob-info-table th,
+  .mob-info-table td {
+    font-size: 14px;
+    padding: 6px;
+  }
 }
